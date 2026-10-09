@@ -1,0 +1,34 @@
+# Storage types: MongoDB | MySQL | SQLite
+Storage: MongoDB
+
+SQLDatabase:
+  # Used by MySQL
+  address: 127.0.0.1
+  database: advanced_minecraft
+  username: root
+  password: "CHANGE_ME"
+  port: 3306
+
+  # Used by SQLite
+  sqlite-file: database
+
+  # Used by MySQL/HikariCP
+  pool-settings:
+    maximum-pool-size: 10
+    minimum-idle: 2
+    connection-timeout: 5000
+
+Option:
+  SQLDatabase:
+    # Identifiers only: letters, numbers and underscores.
+    table: "GCodeSync_code"
+    column: "code"
+
+  MongoDatabase:
+    # Never commit a real production credential here.
+    connect: "mongodb://127.0.0.1:27017"
+    database: "advanced_minecraft"
+    collection: "sync"
+
+# Enables additional console diagnostics.
+debug: false
