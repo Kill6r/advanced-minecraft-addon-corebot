@@ -1,0 +1,29 @@
+name: AdvancedMinecraft
+main: us.advancedminecraft.gcodesync.GCodeSync
+version: ${project.version}
+author: Kill6r
+api-version: 1.13
+
+description: Links Minecraft accounts with the Advanced Minecraft CoreBot addon.
+
+commands:
+  gcode:
+    description: AdvancedMinecraft administration command.
+    usage: /gcode <help|reload>
+    aliases: [gcodesync, gcs]
+  sync:
+    description: Link your Minecraft account using a Discord synchronization code.
+    usage: /sync <code>
+    aliases: [gsync]
+    permission: advancedminecraft.sync
+
+permissions:
+  advancedminecraft.sync:
+    description: Allows players to link their Minecraft account.
+    default: true
+  gcode.command.help:
+    description: Allows use of /gcode help.
+    default: true
+  gcode.command.reload:
+    description: Allows use of /gcode reload.
+    default: op
