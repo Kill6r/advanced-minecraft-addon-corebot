@@ -1,0 +1,111 @@
+
+              {
+                Name: "• Muted by",
+                Value: "> {muted_by}",
+                Inline: true,
+              },
+              {
+                Name: "• Date",
+                Value: "> {date}",
+                Inline: true,
+              },
+              {
+                Name: "• Reason",
+                Value: "> {reason}",
+                Inline: true,
+              },
+              {
+                Name: "• Active",
+                Value: "> {active}",
+                Inline: true,
+              },
+              {
+                Name: "• Server",
+                Value: "> {server}",
+                Inline: true,
+              },
+              { Name: "• ID", Value: "> {id}", Inline: true },
+            ],
+            Components: [
+              [
+                {
+                  ID: "page_3",
+                  Label: "⇐",
+                  Style: "PRIMARY",
+                },
+                {
+                  ID: "page_4",
+                  Label: "⇒",
+                  Style: "PRIMARY",
+                },
+              ],
+            ],
+          },
+          None: {
+            Author: "{user-username}",
+            AuthorIcon: "{user-pfp}",
+            Description: "The user has no mutes.",
+            Timestamp: true,
+          },
+        },
+        Warnings: {
+          History: {
+            Author: "{user-username}'s Warnings History ({page}/{total_pages})",
+            AuthorIcon: "{user-pfp}",
+            Thumbnail: "{warned_by_skin_body_2-pfp}",
+            Footer: "Page {page} of {total_pages}",
+            Timestamp: true,
+            Fields: [
+              {
+                Name: "• Warned by",
+                Value: "> {warned_by}",
+                Inline: true,
+              },
+              {
+                Name: "• Date",
+                Value: "> {date}",
+                Inline: true,
+              },
+              {
+                Name: "• Reason",
+                Value: "> {reason}",
+                Inline: true,
+              },
+              {
+                Name: "• Active",
+                Value: "> {active}",
+                Inline: true,
+              },
+              {
+                Name: "• Server",
+                Value: "> {server}",
+                Inline: true,
+              },
+              { Name: "• ID", Value: "> {id}", Inline: true },
+            ],
+            Components: [
+              [
+                {
+                  ID: "page_5",
+                  Label: "⇐",
+                  Style: "PRIMARY",
+                },
+                {
+                  ID: "page_6",
+                  Label: "⇒",
+                  Style: "PRIMARY",
+                },
+              ],
+            ],
+          },
+          None: {
+            Author: "{user-username}",
+            AuthorIcon: "{user-pfp}",
+            Description: "The user has no warnings.",
+            Timestamp: true,
+          },
+        },
+      },
+    },
+  },
+};

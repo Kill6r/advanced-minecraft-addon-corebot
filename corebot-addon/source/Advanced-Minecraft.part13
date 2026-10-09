@@ -1,0 +1,316 @@
+   },
+          {
+            Name: "sync",
+            Description:
+              "Link your minecraft account with your discord account.",
+            Usage: "/sync",
+          },
+        ],
+        Verified: {
+          Role: "verified-minecraft",
+          Channel: "logs",
+        },
+      },
+      Database: {
+        Sync: {
+          Storage: "MongoDB",
+          Options: {
+            Mongo: {
+              Connect: "mongodb://127.0.0.1:27017/",
+              Database: "advanced_minecraft",
+              Collection: "sync",
+            },
+            SQL: {
+              Address: "127.0.0.1",
+              Database: "advanced_minecraft",
+              Username: "root",
+              Password: "CHANGE_ME",
+              Port: 3306,
+            },
+          },
+        },
+        LiteBans: {
+          Enabled: true,
+          Host: "host",
+          Database: "database_name",
+          User: "user",
+          Password: "CHANGE_ME",
+          Table: "litebans",
+          TablePrefix: `litebans_`,
+          Port: 3306,
+        },
+        LuckPerms: {
+          Enabled: true,
+          Host: "host",
+          Database: "database_name",
+          User: "user",
+          Password: "CHANGE_ME",
+          Port: 3306,
+        },
+      },
+      Messages: {
+        Synchronized_Account: {
+          Author: "Synchronized account!",
+          AuthorIcon:
+            "https://media.discordapp.net/attachments/734838674805620817/1070370089381150841/937977155781009438.webp",
+          Description:
+            "It looks like your discord account is already synced with our minecraft server, you are synced with **{nickname}** (`{discord_tag}`)",
+          Timestamp: true,
+        },
+        Syncing: {
+          Author: "Synchronization system",
+          AuthorIcon:
+            "https://media.discordapp.net/attachments/734838674805620817/1070371535132557322/937977155814559785.webp",
+          Description:
+            "To synchronize your account put the following command on our minecraft server.\n`/sync {code}`",
+          Timestamp: true,
+          Fields: [
+            { Name: "Code", Value: "{code}", Inline: true },
+            { Name: "Expires", Value: "<t:{date}>", Inline: true },
+          ],
+        },
+        Not_Synchronized: {
+          Author: "Account not synchronized!",
+          AuthorIcon:
+            "https://media.discordapp.net/attachments/734838674805620817/1070370089381150841/937977155781009438.webp",
+          Description:
+            "This discord account has not been synced (`{user-tag}`), if you want to synced your account you can use the /sync command in discord and synchronize your account with the minecraft account.",
+          Timestamp: true,
+        },
+        Verified: {
+          Logs: {
+            Author: "Synchronization system",
+            AuthorIcon:
+              "https://media.discordapp.net/attachments/948002408120873001/1076270439145406535/minecraft-1-logo-png-transparent.png",
+            Description: "New user verified with the synchronization system.",
+            Timestamp: true,
+            Fields: [
+              { Name: "Nickname", Value: "{nickname}", Inline: true },
+              { Name: "UUID", Value: "{uuid}", Inline: true },
+              { Name: "Date", Value: "<t:{date}>", Inline: true },
+              { Name: "Discord ID", Value: "{discord_id}", Inline: true },
+              { Name: "Discord Tag", Value: "{discord_tag}", Inline: true },
+              {
+                Name: "Discord Mention",
+                Value: "{discord_mention}",
+                Inline: true,
+              },
+            ],
+          },
+          DM: {
+            Author: "Synchronization system",
+            AuthorIcon:
+              "https://media.discordapp.net/attachments/948002408120873001/1076270439145406535/minecraft-1-logo-png-transparent.png",
+            Description:
+              "Thank you for syncing your minecraft account, **{nickname}**!",
+            Timestamp: true,
+            Fields: [
+              { Name: "Nickname", Value: "{nickname}", Inline: true },
+              { Name: "UUID", Value: "{uuid}", Inline: true },
+              { Name: "Date", Value: "<t:{date}>", Inline: true },
+            ],
+          },
+        },
+        Profile: {
+          Author: "{user-username}",
+          AuthorIcon: "{user-pfp}",
+          Fields: [
+            { Name: "• Nickname", Value: "> {nickname}", Inline: true },
+            { Name: "• UUID", Value: "> {uuid}", Inline: true },
+            { Name: "• Rank", Value: "> {rank}", Inline: true },
+          ],
+          Timestamp: true,
+          Thumbnail: "{skin-pfp}",
+          Components: [
+            [
+              {
+                ID: "mcprofile_1",
+                Label: "View History",
+                Style: "PRIMARY",
+                Emoji: {
+                  Emoji: "📋",
+                  Enabled: true,
+                },
+              },
+            ],
+          ],
+        },
+        History: {
+          Author: "{user-username}",
+          AuthorIcon: "{user-pfp}",
+          Description: "Here you can see all the user's punishments history.",
+          Fields: [
+            {
+              Name: "• Bans",
+              Value: "> {bans}",
+              Inline: true,
+            },
+            {
+              Name: "• Kicks",
+              Value: "> {kicks}",
+              Inline: true,
+            },
+            {
+              Name: "• Mutes",
+              Value: "> {mutes}",
+              Inline: true,
+            },
+            {
+              Name: "• Warnings",
+              Value: "> {warnings}",
+              Inline: true,
+            },
+            {
+              Name: "• Total Punishments",
+              Value: "> {total_punishments}",
+              Inline: true,
+            },
+          ],
+          Timestamp: true,
+          Components: [
+            [
+              {
+                ID: "mcbans",
+                Label: "Bans",
+                Style: "PRIMARY",
+                Emoji: "📋",
+              },
+              {
+                ID: "mckicks",
+                Label: "Kicks",
+                Style: "PRIMARY",
+                Emoji: "📋",
+              },
+              {
+                ID: "mcmutes",
+                Label: "Mutes",
+                Style: "PRIMARY",
+                Emoji: "📋",
+              },
+              {
+                ID: "mcwarns",
+                Label: "Warns",
+                Style: "PRIMARY",
+                Emoji: "📋",
+              },
+            ],
+          ],
+        },
+        Bans: {
+          History: {
+            Author: "{user-username}'s Bans History ({page}/{total_pages})",
+            AuthorIcon: "{user-pfp}",
+            Thumbnail: "{banned_by_skin_body_2-pfp}",
+            Footer: "Page {page} of {total_pages}",
+            Timestamp: true,
+            Fields: [
+              {
+                Name: "• Banned by",
+                Value: "> {banned_by}",
+                Inline: true,
+              },
+              { Name: "• Date", Value: "> {date}", Inline: true },
+              {
+                Name: "• Reason",
+                Value: "> {reason}",
+                Inline: true,
+              },
+              {
+                Name: "• Active",
+                Value: "> {active}",
+                Inline: true,
+              },
+              {
+                Name: "• Server",
+                Value: "> {server}",
+                Inline: true,
+              },
+              { Name: "• ID", Value: "> {id}", Inline: true },
+            ],
+            Components: [
+              [
+                {
+                  ID: "page_1",
+                  Label: "⇐",
+                  Style: "PRIMARY",
+                },
+                {
+                  ID: "page_2",
+                  Label: "⇒",
+                  Style: "PRIMARY",
+                },
+              ],
+            ],
+          },
+          None: {
+            Author: "{user-username}",
+            AuthorIcon: "{user-pfp}",
+            Description: "The user has no bans.",
+            Timestamp: true,
+          },
+        },
+        Kicks: {
+          History: {
+            Author: "{user-username}'s Kicks History ({page}/{total_pages})",
+            AuthorIcon: "{user-pfp}",
+            Thumbnail: "{kicked_by_skin_body_2-pfp}",
+            Footer: "Page {page} of {total_pages}",
+            Timestamp: true,
+            Fields: [
+              {
+                Name: "• Kicked by",
+                Value: "> {kicked_by}",
+                Inline: true,
+              },
+              {
+                Name: "• Date",
+                Value: "> {date}",
+                Inline: true,
+              },
+              {
+                Name: "• Reason",
+                Value: "> {reason}",
+                Inline: true,
+              },
+              {
+                Name: "• Active",
+                Value: "> {active}",
+                Inline: true,
+              },
+              {
+                Name: "• Server",
+                Value: "> {server}",
+                Inline: true,
+              },
+              { Name: "• ID", Value: "> {id}", Inline: true },
+            ],
+            Components: [
+              [
+                {
+                  ID: "page_3",
+                  Label: "⇐",
+                  Style: "PRIMARY",
+                },
+                {
+                  ID: "page_4",
+                  Label: "⇒",
+                  Style: "PRIMARY",
+                },
+              ],
+            ],
+          },
+          None: {
+            Author: "{user-username}",
+            AuthorIcon: "{user-pfp}",
+            Description: "The user has no kicks.",
+            Timestamp: true,
+          },
+        },
+        Mutes: {
+          History: {
+            Author: "{user-username}'s Mutes History ({page}/{total_pages})",
+            AuthorIcon: "{user-pfp}",
+            Thumbnail: "{muted_by_skin_body_2-pfp}",
+            Footer: "Page {page} of {total_pages}",
+            Timestamp: true,
+            Fields: [

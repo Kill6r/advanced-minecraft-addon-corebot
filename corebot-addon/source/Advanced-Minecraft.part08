@@ -1,0 +1,218 @@
+geplay.com/full/512/${
+                                  kicks[page - 1].banned_by_uuid
+                                }.png?y=-45`,
+                              },
+                              {
+                                searchFor: /{kicked_by}/g,
+                                replaceWith: `${
+                                  kicks[page - 1].banned_by_name
+                                }`,
+                              },
+                              {
+                                searchFor: /{date}/g,
+                                replaceWith: `<t:${
+                                  `${kicks[page - 1].time / 1000}`.split(".")[0]
+                                }>`,
+                              },
+                              {
+                                searchFor: /{reason}/g,
+                                replaceWith: `${
+                                  kicks[page - 1].reason || "No Reason"
+                                }`,
+                              },
+                              {
+                                searchFor: /{active}/g,
+                                replaceWith: `${
+                                  `${kicks[page - 1].active}` == "<Buffer 01>"
+                                    ? "🟢"
+                                    : "🔴"
+                                }`,
+                              },
+                              {
+                                searchFor: /{server}/g,
+                                replaceWith: `${
+                                  kicks[page - 1].server_origin || "Not Found"
+                                }`,
+                              },
+                              {
+                                searchFor: /{id}/g,
+                                replaceWith: `${kicks[page - 1].id}`,
+                              },
+                              {
+                                searchFor: /{page}/g,
+                                replaceWith: `${page}`,
+                              },
+                              {
+                                searchFor: /{total_pages}/g,
+                                replaceWith: kicks.length,
+                              },
+                              {
+                                searchFor: /{nickname}/g,
+                                replaceWith: profile.name,
+                              },
+                              {
+                                searchFor: /{uuid}/g,
+                                replaceWith: profile.id,
+                              },
+                              {
+                                searchFor: /{bans}/g,
+                                replaceWith: bans.length,
+                              },
+                              {
+                                searchFor: /{kicks}/g,
+                                replaceWith: kicks.length,
+                              },
+                              {
+                                searchFor: /{mutes}/g,
+                                replaceWith: mutes.length,
+                              },
+                              {
+                                searchFor: /{warnings}/g,
+                                replaceWith: warnings.length,
+                              },
+                              {
+                                searchFor: /{total_punishments}/g,
+                                replaceWith: total_punishments,
+                              },
+                              {
+                                searchFor: /{skin-pfp}/g,
+                                replaceWith: `https://visage.surgeplay.com/head/512/${profile.id}.png`,
+                              },
+                              {
+                                searchFor: /{skin_body-pfp}/g,
+                                replaceWith: `https://visage.surgeplay.com/full/512/${profile.id}.png`,
+                              },
+                              {
+                                searchFor: /{skin_body_2-pfp}/g,
+                                replaceWith: `https://visage.surgeplay.com/full/512/${profile.id}.png?y=-45`,
+                              },
+                              {
+                                searchFor: /{rank}/g,
+                                replaceWith: `Not found`,
+                              },
+                            ],
+                          });
+                          embed.ephemeral = true;
+                          await c.editReply(embed);
+                        }
+                      });
+                    }
+                  } else if (c.customId === "mcwarns") {
+                    let page = 1;
+                    if (warnings.length <= 0) {
+                      embed = Utils.setupMessage({
+                        configPath: Config.Messages.Warnings.None,
+                        variables: [
+                          ...Utils.userVariables(user, "user"),
+                          {
+                            searchFor: /{bot-pfp}/g,
+                            replaceWith: bot.user.displayAvatarURL({
+                              dynamic: true,
+                            }),
+                          },
+                          {
+                            searchFor: /{nickname}/g,
+                            replaceWith: profile.name,
+                          },
+                          {
+                            searchFor: /{uuid}/g,
+                            replaceWith: profile.id,
+                          },
+                          {
+                            searchFor: /{bans}/g,
+                            replaceWith: bans.length,
+                          },
+                          {
+                            searchFor: /{kicks}/g,
+                            replaceWith: kicks.length,
+                          },
+                          {
+                            searchFor: /{mutes}/g,
+                            replaceWith: mutes.length,
+                          },
+                          {
+                            searchFor: /{warnings}/g,
+                            replaceWith: warnings.length,
+                          },
+                          {
+                            searchFor: /{total_punishments}/g,
+                            replaceWith: total_punishments,
+                          },
+                          {
+                            searchFor: /{skin-pfp}/g,
+                            replaceWith: `https://visage.surgeplay.com/head/512/${profile.id}.png`,
+                          },
+                          {
+                            searchFor: /{rank}/g,
+                            replaceWith: `Not found`,
+                          },
+                        ],
+                      });
+                      embed.ephemeral = true;
+                      await c.reply(embed);
+                      return;
+                    } else {
+                      embed = Utils.setupMessage({
+                        configPath: Config.Messages.Warnings.History,
+                        thumbnail:
+                          (Config?.Messages?.Warnings?.History?.Thumbnail ??
+                            false) == false
+                            ? undefined
+                            : Config.Messages.Warnings.History.Thumbnail,
+                        image:
+                          (Config?.Messages?.Warnings?.History?.Image ??
+                            false) == false
+                            ? undefined
+                            : Config.Messages.Warnings.History.Image,
+                        variables: [
+                          ...Utils.userVariables(user, "user"),
+                          {
+                            searchFor: /{bot-pfp}/g,
+                            replaceWith: bot.user.displayAvatarURL({
+                              dynamic: true,
+                            }),
+                          },
+                          {
+                            searchFor: /{warned_by_skin-pfp}/g,
+                            replaceWith: `https://visage.surgeplay.com/head/512/${
+                              warnings[page - 1].banned_by_uuid
+                            }.png`,
+                          },
+                          {
+                            searchFor: /{warned_by_skin_body-pfp}/g,
+                            replaceWith: `https://visage.surgeplay.com/full/512/${
+                              warnings[page - 1].banned_by_uuid
+                            }.png`,
+                          },
+                          {
+                            searchFor: /{warned_by_skin_body_2-pfp}/g,
+                            replaceWith: `https://visage.surgeplay.com/full/512/${
+                              warnings[page - 1].banned_by_uuid
+                            }.png?y=-45`,
+                          },
+                          {
+                            searchFor: /{warned_by}/g,
+                            replaceWith: `${warnings[page - 1].banned_by_name}`,
+                          },
+                          {
+                            searchFor: /{date}/g,
+                            replaceWith: `<t:${
+                              `${warnings[page - 1].time / 1000}`.split(".")[0]
+                            }>`,
+                          },
+                          {
+                            searchFor: /{reason}/g,
+                            replaceWith: `${
+                              warnings[page - 1].reason || "No Reason"
+                            }`,
+                          },
+                          {
+                            searchFor: /{active}/g,
+                            replaceWith: `${
+                              `${warnings[page - 1].active}` == "<Buffer 01>"
+                                ? "🟢"
+                                : "🔴"
+                            }`,
+                          },
+                          {
+                            sear

@@ -1,0 +1,310 @@
+0) + 600}`.split(".")[0];
+
+            let member = await bot.users.fetch(i.discord_id);
+            let nick = i.nick || i.nickname;
+            let uuid = i.uuid.replaceAll("-", "");
+
+            console.log(i);
+
+            member.createdAt = {
+              toLocaleString: "asd1",
+              getTime: "asd2",
+            };
+
+            member.displayAvatarURL = () => {
+              return `https://cdn.discordapp.com/avatars/${member.id}/${member.avatar}`;
+            };
+            member.createdAt.toLocaleString = () => {
+              return `none`;
+            };
+            member.createdAt.getTime = () => {
+              return 100000;
+            };
+
+            await Verify.create({
+              guild_id: i.guild_id,
+              nickname: i.nick,
+              discord_tag: i.discord_tag,
+              discord_id: i.discord_id,
+              uuid: i.uuid,
+              date: date,
+            });
+
+            let logEmbed = Utils.setupMessage({
+              configPath: Config.Messages.Verified.Logs,
+              thumbnail:
+                (Config?.Messages?.Verified?.Logs?.Thumbnail ?? false) === false
+                  ? undefined
+                  : Config.Messages.Verified.Logs.Thumbnail,
+              image:
+                (Config?.Messages?.Verified?.Logs?.Image ?? false) === false
+                  ? undefined
+                  : Config.Messages.Verified.Logs.Image,
+              variables: [
+                ...Utils.userVariables(member, "user"),
+                {
+                  searchFor: /{bot-pfp}/g,
+                  replaceWith: bot.user.displayAvatarURL({ dynamic: true }),
+                },
+                { searchFor: /{nickname}/g, replaceWith: nick },
+                { searchFor: /{date}/g, replaceWith: date },
+                { searchFor: /{uuid}/g, replaceWith: uuid },
+                { searchFor: /{discord_tag}/g, replaceWith: member.tag },
+                { searchFor: /{discord_id}/g, replaceWith: member.id },
+                {
+                  searchFor: /{discord_mention}/g,
+                  replaceWith: `<@${member.id}>`,
+                },
+              ],
+            });
+
+            let dmEmbed = Utils.setupMessage({
+              configPath: Config.Messages.Verified.DM,
+              thumbnail:
+                (Config?.Messages?.Verified?.DM?.Thumbnail ?? false) === false
+                  ? undefined
+                  : Config.Messages.Verified.DM.Thumbnail,
+              image:
+                (Config?.Messages?.Verified?.DM?.Image ?? false) === false
+                  ? undefined
+                  : Config.Messages.Verified.DM.Image,
+              variables: [
+                ...Utils.userVariables(member, "user"),
+                {
+                  searchFor: /{bot-pfp}/g,
+                  replaceWith: bot.user.displayAvatarURL({ dynamic: true }),
+                },
+                { searchFor: /{nickname}/g, replaceWith: nick },
+                { searchFor: /{date}/g, replaceWith: date },
+                { searchFor: /{uuid}/g, replaceWith: uuid },
+                { searchFor: /{discord_tag}/g, replaceWith: member.tag },
+                { searchFor: /{discord_id}/g, replaceWith: member.id },
+                {
+                  searchFor: /{discord_mention}/g,
+                  replaceWith: `<@${member.id}>`,
+                },
+              ],
+            });
+
+            if (channel !== false) channel.send(logEmbed);
+            if (role !== false)
+              guild.members.cache
+                .get(i.discord_id)
+                .roles.add(role)
+                .catch((err) => {});
+            guild.members.cache.get(i.discord_id).send(dmEmbed);
+          }
+        }
+      });
+    }
+    setInterval(async () => await verify(), 3000);
+
+    /* #-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= Databases -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=# */
+
+    let storageLB;
+    let storageLP;
+
+    let LiteBans;
+    let LuckPerms;
+
+    if (Config.Database.LiteBans.Enabled === true) {
+      storageLB = true;
+    } else {
+      storageLB = false;
+    }
+
+    if (Config.Database.LuckPerms.Enabled === true) {
+      storageLP = true;
+    } else {
+      storageLP = false;
+    }
+
+    if (storageLB === true) {
+      LiteBans = mysql.createPool({
+        connectionLimit: 50,
+        host: Config.Database.LiteBans.Host,
+        user: Config.Database.LiteBans.User,
+        password: Config.Database.LiteBans.Password,
+        database: Config.Database.LiteBans.Database,
+        port: Config.Database.LiteBans.Port,
+      });
+
+      LiteBans.getConnection(function (err, connection) {
+        if (err) {
+          console.log(Utils.errorPrefix + err.message);
+          console.log(
+            Utils.infoPrefix +
+              `${chalk.yellow.bold("[LITEBANS]")} ${chalk.red.underline(
+                `✘ Database not connected!`
+              )} .`
+          );
+          storageLB = false;
+        } else {
+          connection.release();
+          console.log(
+            Utils.infoPrefix +
+              `${chalk.yellow.bold("[LITEBANS]")} ${chalk.green.underline(
+                `√ Successfully connected database!`
+              )}.`
+          );
+        }
+      });
+    }
+
+    if (storageLP === true) {
+      LuckPerms = mysql.createPool({
+        connectionLimit: 50,
+        host: Config.Database.LuckPerms.Host,
+        user: Config.Database.LuckPerms.User,
+        password: Config.Database.LuckPerms.Password,
+        database: Config.Database.LuckPerms.Database,
+        port: Config.Database.LuckPerms.Port,
+      });
+
+      LuckPerms.getConnection(function (err, connection) {
+        if (err) {
+          console.log(Utils.errorPrefix + err.message);
+          console.log(
+            Utils.infoPrefix +
+              `${chalk.magenta.bold("[LUCKPERMS]")} ${chalk.red.underline(
+                `✘ Database not connected!`
+              )} .`
+          );
+          storageLP = false;
+        } else {
+          connection.release();
+          console.log(
+            Utils.infoPrefix +
+              `${chalk.magenta.bold("[LUCKPERMS]")} ${chalk.green.underline(
+                `√ Successfully connected database!`
+              )}.`
+          );
+        }
+      });
+    }
+
+    async function getRank(user) {
+      return new Promise((resolve, reject) => {
+        LuckPerms.query(
+          `SELECT * FROM luckperms_players WHERE uuid = ? LIMIT 1`,
+          [user],
+          (err, result) => {
+            if (err) reject(err);
+            else if (result[0] == undefined) resolve("Not in database");
+            else resolve(result[0].primary_group);
+          }
+        );
+      });
+    }
+
+    async function getBans(user) {
+      return new Promise((resolve, reject) => {
+        LiteBans.query(
+          `SELECT * FROM ${Config.Database.LiteBans.TablePrefix}bans WHERE uuid = ?`,
+          [user],
+          (err, result) => {
+            if (err) reject(err);
+            if (result[0] == undefined) resolve(0);
+            else resolve(result);
+          }
+        );
+      });
+    }
+
+    async function getKicks(user) {
+      return new Promise((resolve, reject) => {
+        LiteBans.query(
+          `SELECT * FROM ${Config.Database.LiteBans.TablePrefix}kicks WHERE uuid = ?`,
+          [user],
+          (err, result) => {
+            if (err) reject(err);
+            if (result[0] == undefined) resolve(0);
+            else resolve(result);
+          }
+        );
+      });
+    }
+
+    async function getMutes(user) {
+      return new Promise((resolve, reject) => {
+        LiteBans.query(
+          `SELECT * FROM ${Config.Database.LiteBans.TablePrefix}mutes WHERE uuid = ?`,
+          [user],
+          (err, result) => {
+            if (err) reject(err);
+            if (result[0] == undefined) resolve(0);
+            else resolve(result);
+          }
+        );
+      });
+    }
+
+    async function getWarnings(user) {
+      return new Promise((resolve, reject) => {
+        LiteBans.query(
+          `SELECT * FROM ${Config.Database.LiteBans.TablePrefix}warnings WHERE uuid = ?`,
+          [user],
+          (err, result) => {
+            if (err) reject(err);
+            if (result[0] == undefined) resolve(0);
+            else resolve(result);
+          }
+        );
+      });
+    }
+
+    async function test(user) {
+      return new Promise((resolve, reject) => {
+        LiteBans.query(
+          `SELECT * FROM ${Config.Database.LiteBans.TablePrefix}bans`,
+          (err, result) => {
+            if (err) reject(err);
+            if (result[0] == undefined) resolve(0);
+            else resolve(result);
+          }
+        );
+      });
+    }
+
+    /* console.log(await test("d6e2b71a-0d50-4e1f-a9d1-0591fe524ae1")); */
+    /*     console.log(await getMutes("d6e2b71a-0d50-4e1f-a9d1-0591fe524ae1"));
+    console.log(await getBans("d6e2b71a-0d50-4e1f-a9d1-0591fe524ae1"));
+    console.log(await getRank("d6e2b71a-0d50-4e1f-a9d1-0591fe524ae1")); */
+
+    /* #-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= Comandos -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=# */
+
+    CommandHandler.set({
+      name: Config.Settings.Commands[1].Name,
+      run: async (
+        bot,
+        int,
+        args,
+        {
+          slashCommand,
+          prefixUsed,
+          commandUsed,
+          type,
+          user,
+          member,
+          guild,
+          channel,
+          reply,
+        }
+      ) => {
+        if (int.interaction === null) {
+        } else {
+          let data_2 = await SyncTemporal.findOne({
+            id: int.user.id,
+          }).exec();
+
+          let check_1 = await Sync.findOne({ discord_id: int.user.id }).exec();
+          let test = await Sync.find().exec();
+          let test_2 = await SyncTemporal.find().exec();
+
+          /* Check synced account */
+
+          if ((check_1?.verified ?? false) === true) {
+            let profile = await lookupName(check_1.uuid);
+            let nick = profile?.name ?? check_1.nick;
+            let embed = Utils.setupMessage({
+              configPath: Config.Messages.Synchronized_Account,

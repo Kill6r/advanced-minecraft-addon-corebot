@@ -1,0 +1,223 @@
+                           {
+                                searchFor: /{uuid}/g,
+                                replaceWith: profile.id,
+                              },
+                              {
+                                searchFor: /{bans}/g,
+                                replaceWith: bans.length,
+                              },
+                              {
+                                searchFor: /{kicks}/g,
+                                replaceWith: kicks.length,
+                              },
+                              {
+                                searchFor: /{mutes}/g,
+                                replaceWith: mutes.length,
+                              },
+                              {
+                                searchFor: /{warnings}/g,
+                                replaceWith: warnings.length,
+                              },
+                              {
+                                searchFor: /{total_punishments}/g,
+                                replaceWith: total_punishments,
+                              },
+                              {
+                                searchFor: /{skin-pfp}/g,
+                                replaceWith: `https://visage.surgeplay.com/head/512/${profile.id}.png`,
+                              },
+                              {
+                                searchFor: /{skin_body-pfp}/g,
+                                replaceWith: `https://visage.surgeplay.com/full/512/${profile.id}.png`,
+                              },
+                              {
+                                searchFor: /{skin_body_2-pfp}/g,
+                                replaceWith: `https://visage.surgeplay.com/full/512/${profile.id}.png?y=-45`,
+                              },
+                              {
+                                searchFor: /{rank}/g,
+                                replaceWith: `Not found`,
+                              },
+                            ],
+                          });
+                          embed.ephemeral = true;
+                          await c.editReply(embed);
+                        } else if (o.customId === "page_4") {
+                          await o.deferUpdate();
+                          page++;
+                          if (page === 0) page = 1;
+                          if (page >= mutes.length) page = mutes.length;
+                          embed = Utils.setupMessage({
+                            configPath: Config.Messages.Mutes.History,
+                            thumbnail:
+                              (Config?.Messages?.Mutes?.History?.Thumbnail ??
+                                false) == false
+                                ? undefined
+                                : Config.Messages.Mutes.History.Thumbnail,
+                            image:
+                              (Config?.Messages?.Mutes?.History?.Image ??
+                                false) == false
+                                ? undefined
+                                : Config.Messages.Mutes.History.Image,
+                            variables: [
+                              ...Utils.userVariables(user, "user"),
+                              {
+                                searchFor: /{bot-pfp}/g,
+                                replaceWith: bot.user.displayAvatarURL({
+                                  dynamic: true,
+                                }),
+                              },
+                              {
+                                searchFor: /{muted_by_skin-pfp}/g,
+                                replaceWith: `https://visage.surgeplay.com/head/512/${
+                                  mutes[page - 1].banned_by_uuid
+                                }.png`,
+                              },
+                              {
+                                searchFor: /{muted_by_skin_body-pfp}/g,
+                                replaceWith: `https://visage.surgeplay.com/full/512/${
+                                  mutes[page - 1].banned_by_uuid
+                                }.png`,
+                              },
+                              {
+                                searchFor: /{muted_by_skin_body_2-pfp}/g,
+                                replaceWith: `https://visage.surgeplay.com/full/512/${
+                                  mutes[page - 1].banned_by_uuid
+                                }.png?y=-45`,
+                              },
+                              {
+                                searchFor: /{muted_by}/g,
+                                replaceWith: `${
+                                  mutes[page - 1].banned_by_name
+                                }`,
+                              },
+                              {
+                                searchFor: /{date}/g,
+                                replaceWith: `<t:${
+                                  `${mutes[page - 1].time / 1000}`.split(".")[0]
+                                }>`,
+                              },
+                              {
+                                searchFor: /{reason}/g,
+                                replaceWith: `${
+                                  mutes[page - 1].reason || "No Reason"
+                                }`,
+                              },
+                              {
+                                searchFor: /{active}/g,
+                                replaceWith: `${
+                                  `${mutes[page - 1].active}` == "<Buffer 01>"
+                                    ? "🟢"
+                                    : "🔴"
+                                }`,
+                              },
+                              {
+                                searchFor: /{server}/g,
+                                replaceWith: `${
+                                  mutes[page - 1].server_origin || "Not Found"
+                                }`,
+                              },
+                              {
+                                searchFor: /{id}/g,
+                                replaceWith: `${mutes[page - 1].id}`,
+                              },
+                              {
+                                searchFor: /{page}/g,
+                                replaceWith: `${page}`,
+                              },
+                              {
+                                searchFor: /{total_pages}/g,
+                                replaceWith: mutes.length,
+                              },
+                              {
+                                searchFor: /{nickname}/g,
+                                replaceWith: profile.name,
+                              },
+                              {
+                                searchFor: /{uuid}/g,
+                                replaceWith: profile.id,
+                              },
+                              {
+                                searchFor: /{bans}/g,
+                                replaceWith: bans.length,
+                              },
+                              {
+                                searchFor: /{kicks}/g,
+                                replaceWith: kicks.length,
+                              },
+                              {
+                                searchFor: /{mutes}/g,
+                                replaceWith: mutes.length,
+                              },
+                              {
+                                searchFor: /{warnings}/g,
+                                replaceWith: warnings.length,
+                              },
+                              {
+                                searchFor: /{total_punishments}/g,
+                                replaceWith: total_punishments,
+                              },
+                              {
+                                searchFor: /{skin-pfp}/g,
+                                replaceWith: `https://visage.surgeplay.com/head/512/${profile.id}.png`,
+                              },
+                              {
+                                searchFor: /{skin_body-pfp}/g,
+                                replaceWith: `https://visage.surgeplay.com/full/512/${profile.id}.png`,
+                              },
+                              {
+                                searchFor: /{skin_body_2-pfp}/g,
+                                replaceWith: `https://visage.surgeplay.com/full/512/${profile.id}.png?y=-45`,
+                              },
+                              {
+                                searchFor: /{rank}/g,
+                                replaceWith: `Not found`,
+                              },
+                            ],
+                          });
+                          embed.ephemeral = true;
+                          await c.editReply(embed);
+                        }
+                      });
+                    }
+                  }
+                });
+              }
+            });
+          }
+        }
+      },
+      description: Config.Settings.Commands[0].Description,
+      usage: Config.Settings.Commands[0].Usage,
+      aliases: [],
+      type: "advanced-minecraft",
+      arguments: [
+        {
+          name: Config.Settings.Commands[0].Arguments.Name,
+          description: Config.Settings.Commands[0].Arguments.Description,
+          required: false,
+          type: "USER",
+        },
+      ],
+    });
+  },
+  dependencies: [],
+  configs: {
+    config: {
+      License: "XXXXXXX-XXXXXXX-XXXXXXX-XXXXXXX",
+      LicenseValidation: {
+        Endpoint: "https://your-license-server.example/api/licenses",
+        ApiKey: "CHANGE_ME",
+      },
+      Settings: {
+        Commands: [
+          {
+            Name: "mcprofile",
+            Description: "View your minecraft profile or that of another user.",
+            Usage: "/mcprofile",
+            Arguments: {
+              Name: "user",
+              Description:
+                "The user you want to sync your minecraft account with",
+            },
+        
