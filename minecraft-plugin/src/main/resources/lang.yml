@@ -1,0 +1,35 @@
+prefix: "&7[&6&l✭&7]"
+
+Command:
+  reload: "<prefix> &fThe plugin has been reloaded."
+  Help: |-
+    &7
+    &f&l        AdvancedMinecraft
+    &7
+    &e/sync <code> &7- &fLink your Minecraft account
+    &e/gcode help &7- &fShow this help
+    &7
+  error:
+    permission: "<prefix> &fYou do not have permission to run that command."
+    syntax: "<prefix> &fInvalid argument. Use &e/gcode help&f."
+    reload: "<prefix> &cThe plugin could not be reloaded. Check the console."
+
+Language:
+  sync:
+    usage: "&7[&4!&7] &fUse: &e/sync <code>"
+    player_only: "&7[&4!&7] &cOnly a player can use /sync."
+    invalid: "&7[&4!&7] &cThe code &7(&b<code>&7) &cis not valid."
+    code_already_used: "&7[&4!&7] &cThat synchronization code has already been used."
+    database_error: "&7[&4!&7] &cThe synchronization service is temporarily unavailable. Please try again later."
+    minecraft_already_synced: "&7[&4!&7] &cYour Minecraft account is already linked with &4<discord_tag>&c."
+    success: "<prefix> &bThank you, &4&l<player_name>&b. Your account was successfully linked with &4<discord_tag>&b!"
+
+Admin:
+  Help: |-
+    &7
+    &f&l        AdvancedMinecraft v1.0.1
+    &7
+    &e/gcode help   &7- &fShow the command list
+    &e/gcode reload &7- &fReload configuration and reconnect storage
+    &e/sync <code>  &7- &fLink a Minecraft account
+    &7
