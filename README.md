@@ -5,6 +5,9 @@ This repository contains the two parts of the Advanced Minecraft account synchro
 - `minecraft-plugin/`: Spigot plugin written in Java.
 - `corebot-addon/`: CoreBot addon written in JavaScript.
 
+> **Estado:** Proyecto descontinuado.  
+> This addon was created for CoreBot. Since CoreBot has been discontinued, this addon is no longer actively maintained. The repository is preserved solely for portfolio, documentation, and technical demonstration purposes.
+
 ## What was fixed
 
 ### Minecraft plugin
